@@ -85,8 +85,9 @@ BEGIN
             AND atr.is_correct = 'Y'
         )
     WHERE program_id = v_program_id
-      AND student_id = v_student_id
-      AND ai_tried_id = v_ai_tried_id;
+    AND student_id = v_student_id
+    AND ai_tried_id = v_ai_tried_id
+    AND status <> 'FINISHED';
 
     RETURN COALESCE(NEW, OLD);
 END;

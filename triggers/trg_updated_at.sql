@@ -31,12 +31,12 @@ ON razonapro.rankings_students;
 DROP FUNCTION IF EXISTS razonapro.fn_set_updated_at();
 
 CREATE FUNCTION razonapro.fn_set_updated_at()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER AS $fn_set_updated_at$
 BEGIN
     NEW.updated_at := CURRENT_TIMESTAMP;
     RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$fn_set_updated_at$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trg_admins_updated_at
 BEFORE UPDATE ON razonapro.admins

@@ -14,7 +14,7 @@ CREATE FUNCTION razonapro.fn_refresh_student_ranking(
     p_student_id VARCHAR,
     p_program_id VARCHAR
 )
-RETURNS VOID AS $$
+RETURNS VOID AS $fn_refresh_student_ranking$
 DECLARE
     v_ranking RECORD;
     v_period_start DATE;
@@ -106,7 +106,7 @@ BEGIN
         END IF;
     END LOOP;
 END;
-$$ LANGUAGE plpgsql;
+$fn_refresh_student_ranking$ LANGUAGE plpgsql;
 
 CREATE FUNCTION razonapro.fn_update_ranking_on_tried()
 RETURNS TRIGGER AS $trg_update_ranking_on_tried$
