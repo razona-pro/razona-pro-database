@@ -26,6 +26,7 @@ CREATE TABLE razonapro.students (
     CONSTRAINT CK_STUDENTS_EMAIL_VERIFIED CHECK (email_verified IN ('Y', 'N')),
     CONSTRAINT CK_STUDENTS_IDENTITY_VERIFIED CHECK (identity_verified IN ('Y', 'N')),
     CONSTRAINT CK_STUDENTS_EMAIL_FMT CHECK (email ~* '^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$' AND email NOT LIKE '%..%'),
+    CONSTRAINT CK_STUDENTS_EMAIL_DOMAIN CHECK (email LIKE '%@ufpso.edu.co')
     CONSTRAINT CK_STUDENTS_PHONE_FMT CHECK (phone ~ '^\+[1-9][0-9]{10,13}$'),
     CONSTRAINT CK_STUDENTS_PWD_LEN CHECK (LENGTH(password_hash) >= 60), -- bcrypt/argon2 producen minimo 60 chars
     CONSTRAINT CK_STUDENTS_FIRST_NAME_NOTEMPTY CHECK (LENGTH(TRIM(first_name)) > 0),
