@@ -5,7 +5,7 @@ CREATE TABLE razonapro.tests_questions (
     admin_id VARCHAR(6) NOT NULL,
     competence_id VARCHAR(6) NOT NULL,
     test_id VARCHAR(8) NOT NULL,
-    question_id VARCHAR(6) NOT NULL,
+    question_id VARCHAR(7) NOT NULL,
     test_question_id INTEGER NOT NULL,
     question_order INTEGER,
     is_active CHAR(1) NOT NULL,

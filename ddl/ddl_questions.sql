@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS razonapro.questions;
 
 CREATE TABLE razonapro.questions (
     competence_id VARCHAR(6) NOT NULL,
-    question_id VARCHAR(6) NOT NULL,
+    question_id VARCHAR(7) NOT NULL,
     admin_id VARCHAR(6) NOT NULL,
     statement VARCHAR(300) NOT NULL,
     explanation VARCHAR(200),

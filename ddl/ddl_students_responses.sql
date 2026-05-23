@@ -6,7 +6,7 @@ CREATE TABLE razonapro.students_responses (
     program_id VARCHAR(3) NOT NULL,
     student_id VARCHAR(7) NOT NULL,
     tried_id VARCHAR(10) NOT NULL,
-    question_id VARCHAR(6) NOT NULL,
+    question_id VARCHAR(7) NOT NULL,
     option_id VARCHAR(6) NOT NULL,
     student_response_id VARCHAR(10) NOT NULL,
     is_correct CHAR(1) NOT NULL,
