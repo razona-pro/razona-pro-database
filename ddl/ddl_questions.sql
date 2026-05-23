@@ -1,20 +1,20 @@
 DROP TABLE IF EXISTS razonapro.questions;
 
 CREATE TABLE razonapro.questions (
-    competence_id    VARCHAR(6)   NOT NULL,
-    question_id      VARCHAR(6)   NOT NULL,
-    admin_id         VARCHAR(6)   NOT NULL,
-    statement        VARCHAR(300) NOT NULL,
-    explanation      VARCHAR(200),
-    source           VARCHAR(50),
-    difficulty_level CHAR(1)      NOT NULL,
-    is_active        CHAR(1)      NOT NULL,
-    created_at       TIMESTAMP    NOT NULL,
-    updated_at       TIMESTAMP,
+    competence_id VARCHAR(6) NOT NULL,
+    question_id VARCHAR(6) NOT NULL,
+    admin_id VARCHAR(6) NOT NULL,
+    statement VARCHAR(300) NOT NULL,
+    explanation VARCHAR(200),
+    source VARCHAR(50),
+    difficulty_level CHAR(1) NOT NULL,
+    is_active CHAR(1) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP,
     CONSTRAINT FK_QUESTIONS_ADMINS FOREIGN KEY (admin_id)
-        REFERENCES razonapro.admins (admin_id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+    REFERENCES razonapro.admins (admin_id) ON DELETE RESTRICT ON UPDATE RESTRICT,
     CONSTRAINT FK_QUESTIONS_COMPETENCES FOREIGN KEY (competence_id)
-        REFERENCES razonapro.competences (competence_id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+    REFERENCES razonapro.competences (competence_id) ON DELETE RESTRICT ON UPDATE RESTRICT,
     CONSTRAINT CK_QUESTIONS_IS_ACTIVE CHECK (is_active IN ('Y', 'N')),
     CONSTRAINT CK_QUESTIONS_DIFFICULTY_LEVEL CHECK (difficulty_level IN ('B', 'M', 'A')), -- B=Basico | M=Medio | A=Alto
     CONSTRAINT CK_QUESTIONS_STATEMENT_NOTEMPTY CHECK (LENGTH(TRIM(statement)) > 0),
@@ -24,12 +24,10 @@ CREATE TABLE razonapro.questions (
     CONSTRAINT PK_QUESTIONS PRIMARY KEY (competence_id, question_id)
 );
 
--- Activa por defecto al crear una pregunta
 ALTER TABLE razonapro.questions
 ALTER COLUMN is_active
 SET DEFAULT 'Y';
 
--- Timestamp automatico al momento de insertar
 ALTER TABLE razonapro.questions
 ALTER COLUMN created_at
 SET DEFAULT CURRENT_TIMESTAMP;

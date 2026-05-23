@@ -1,18 +1,18 @@
 DROP TABLE IF EXISTS razonapro.admins;
 
 CREATE TABLE razonapro.admins (
-    admin_id       VARCHAR(6)  NOT NULL,
-    first_name     VARCHAR(15) NOT NULL,
-    second_name    VARCHAR(15),
-    first_surname  VARCHAR(15) NOT NULL,
+    admin_id VARCHAR(6) NOT NULL,
+    first_name VARCHAR(15) NOT NULL,
+    second_name VARCHAR(15),
+    first_surname VARCHAR(15) NOT NULL,
     second_surname VARCHAR(15),
-    email          VARCHAR(50) NOT NULL,
-    phone          VARCHAR(15) NOT NULL,
-    password_hash  VARCHAR(72) NOT NULL,
-    is_active      CHAR(1)     NOT NULL,
-    last_login_at  TIMESTAMP,
-    created_at     TIMESTAMP   NOT NULL,
-    updated_at     TIMESTAMP,
+    email VARCHAR(50) NOT NULL,
+    phone VARCHAR(15) NOT NULL,
+    password_hash VARCHAR(72) NOT NULL,
+    is_active CHAR(1) NOT NULL,
+    last_login_at TIMESTAMP,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP,
     CONSTRAINT UN_ADMINS_EMAIL UNIQUE (email),
     CONSTRAINT UN_ADMINS_PHONE UNIQUE (phone),
     CONSTRAINT CK_ADMINS_IS_ACTIVE CHECK (is_active IN ('Y', 'N')),
@@ -28,12 +28,10 @@ CREATE TABLE razonapro.admins (
     CONSTRAINT PK_ADMINS PRIMARY KEY (admin_id)
 );
 
--- Activo por defecto al crear un admin
 ALTER TABLE razonapro.admins
 ALTER COLUMN is_active
 SET DEFAULT 'Y';
 
--- Timestamp automatico al momento de insertar
 ALTER TABLE razonapro.admins
 ALTER COLUMN created_at
 SET DEFAULT CURRENT_TIMESTAMP;

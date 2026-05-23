@@ -1,7 +1,10 @@
-DROP FUNCTION IF EXISTS razonapro.fn_audi_programs() CASCADE;
+DROP TRIGGER IF EXISTS trg_audi_programs
+ON razonapro.programs;
 
-CREATE OR REPLACE FUNCTION razonapro.fn_audi_programs()
-RETURNS TRIGGER LANGUAGE plpgsql AS $$
+DROP FUNCTION IF EXISTS razonapro.fn_audi_programs();
+
+CREATE FUNCTION razonapro.fn_audi_programs()
+RETURNS TRIGGER AS $trg_audi_programs$
 BEGIN
     IF (TG_OP = 'UPDATE') THEN
         INSERT INTO razonapro.audi_programs (row_id, program_id, program_name, is_active, registered_at, db_user, action)
@@ -12,9 +15,10 @@ BEGIN
         VALUES (DEFAULT, OLD.program_id, OLD.program_name, OLD.is_active, CURRENT_TIMESTAMP, CURRENT_USER, 'D');
         RETURN OLD;
     END IF;
+    RETURN NULL;
 END;
-$$;
+$trg_audi_programs$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trg_audi_programs
-    BEFORE UPDATE OR DELETE ON razonapro.programs
-    FOR EACH ROW EXECUTE FUNCTION razonapro.fn_audi_programs();
+BEFORE UPDATE OR DELETE ON razonapro.programs
+FOR EACH ROW EXECUTE FUNCTION razonapro.fn_audi_programs();

@@ -1,7 +1,10 @@
-DROP FUNCTION IF EXISTS razonapro.fn_audi_admins() CASCADE;
+DROP TRIGGER IF EXISTS trg_audi_admins
+ON razonapro.admins;
 
-CREATE OR REPLACE FUNCTION razonapro.fn_audi_admins()
-RETURNS TRIGGER LANGUAGE plpgsql AS $$
+DROP FUNCTION IF EXISTS razonapro.fn_audi_admins();
+
+CREATE FUNCTION razonapro.fn_audi_admins()
+RETURNS TRIGGER AS $trg_audi_admins$
 BEGIN
     IF (TG_OP = 'UPDATE') THEN
         INSERT INTO razonapro.audi_admins (row_id, admin_id, email, is_active, registered_at, db_user, action)
@@ -13,8 +16,8 @@ BEGIN
         RETURN OLD;
     END IF;
 END;
-$$;
+$trg_audi_admins$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trg_audi_admins
-    BEFORE UPDATE OR DELETE ON razonapro.admins
-    FOR EACH ROW EXECUTE FUNCTION razonapro.fn_audi_admins();
+BEFORE UPDATE OR DELETE ON razonapro.admins
+FOR EACH ROW EXECUTE FUNCTION razonapro.fn_audi_admins();

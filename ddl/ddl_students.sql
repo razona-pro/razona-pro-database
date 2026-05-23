@@ -1,23 +1,23 @@
 DROP TABLE IF EXISTS razonapro.students;
 
 CREATE TABLE razonapro.students (
-    student_id        VARCHAR(7)  NOT NULL,
-    program_id        VARCHAR(3)  NOT NULL,
-    first_name        VARCHAR(15) NOT NULL,
-    second_name       VARCHAR(15),
-    first_surname     VARCHAR(15) NOT NULL,
-    second_surname    VARCHAR(15),
-    email             VARCHAR(50) NOT NULL,
-    phone             VARCHAR(15) NOT NULL,
-    password_hash     VARCHAR(72) NOT NULL,
-    is_active         CHAR(1)     NOT NULL,
-    email_verified    CHAR(1)     NOT NULL,
-    identity_verified CHAR(1)     NOT NULL,
-    created_at        TIMESTAMP   NOT NULL,
-    updated_at        TIMESTAMP,
-    last_login_at     TIMESTAMP,
+    student_id VARCHAR(7) NOT NULL,
+    program_id VARCHAR(3) NOT NULL,
+    first_name VARCHAR(15) NOT NULL,
+    second_name VARCHAR(15),
+    first_surname VARCHAR(15) NOT NULL,
+    second_surname VARCHAR(15),
+    email VARCHAR(50) NOT NULL,
+    phone VARCHAR(15) NOT NULL,
+    password_hash VARCHAR(72) NOT NULL,
+    is_active CHAR(1) NOT NULL,
+    email_verified CHAR(1) NOT NULL,
+    identity_verified CHAR(1) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP,
+    last_login_at TIMESTAMP,
     CONSTRAINT FK_STUDENTS_PROGRAMS FOREIGN KEY (program_id)
-        REFERENCES razonapro.programs (program_id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+    REFERENCES razonapro.programs (program_id) ON DELETE RESTRICT ON UPDATE RESTRICT,
     CONSTRAINT UN_STUDENTS_EMAIL UNIQUE (email),
     CONSTRAINT UN_STUDENTS_PHONE UNIQUE (phone),
     CONSTRAINT CK_STUDENTS_ID_FMT CHECK (student_id ~ '^[0-9]{7}$'),
@@ -37,22 +37,18 @@ CREATE TABLE razonapro.students (
     CONSTRAINT PK_STUDENTS PRIMARY KEY (student_id, program_id)
 );
 
--- Activo por defecto al crear un estudiante
 ALTER TABLE razonapro.students
 ALTER COLUMN is_active
 SET DEFAULT 'Y';
 
--- Email sin verificar por defecto hasta que complete el proceso
 ALTER TABLE razonapro.students
 ALTER COLUMN email_verified
 SET DEFAULT 'N';
 
--- Identidad sin verificar por defecto hasta que complete el proceso
 ALTER TABLE razonapro.students
 ALTER COLUMN identity_verified
 SET DEFAULT 'N';
 
--- Timestamp automatico al momento de insertar
 ALTER TABLE razonapro.students
 ALTER COLUMN created_at
 SET DEFAULT CURRENT_TIMESTAMP;

@@ -1,6 +1,6 @@
 # razona-pro-database
 
-Scripts de la base de datos de RazonaPro. Modelo relacional implementado en PostgreSQL 15+ sobre Supabase con 14 tablas, triggers, validaciones, constraints y tablas de auditoría.
+Scripts de la base de datos de RazonaPro. Modelo relacional implementado en PostgreSQL 15+ sobre Supabase con 14 tablas, triggers, validaciones, constraints y 7 tablas de auditoría.
 
 ---
 

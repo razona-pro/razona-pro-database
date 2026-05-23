@@ -1,19 +1,19 @@
 DROP TABLE IF EXISTS razonapro.ai_trieds;
 
 CREATE TABLE razonapro.ai_trieds (
-    program_id         VARCHAR(3)   NOT NULL,
-    student_id         VARCHAR(7)   NOT NULL,
-    ai_tried_id        VARCHAR(10)  NOT NULL,
-    status             VARCHAR(15)  NOT NULL,
-    score              NUMERIC(7,2),
-    total_questions    INTEGER      NOT NULL,
-    correct_answers    INTEGER,
+    program_id VARCHAR(3) NOT NULL,
+    student_id VARCHAR(7) NOT NULL,
+    ai_tried_id VARCHAR(10) NOT NULL,
+    status VARCHAR(15) NOT NULL,
+    score NUMERIC(7,2),
+    total_questions INTEGER NOT NULL,
+    correct_answers INTEGER,
     time_spent_seconds INTEGER,
-    finished_at        TIMESTAMP,
-    attempt_timestamp  TIMESTAMP    NOT NULL,
-    description        VARCHAR(100),
+    finished_at TIMESTAMP,
+    attempt_timestamp TIMESTAMP NOT NULL,
+    description VARCHAR(100),
     CONSTRAINT FK_AI_TRIEDS_STUDENTS FOREIGN KEY (student_id, program_id)
-        REFERENCES razonapro.students (student_id, program_id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+    REFERENCES razonapro.students (student_id, program_id) ON DELETE RESTRICT ON UPDATE RESTRICT,
     CONSTRAINT CK_AI_TRIEDS_STATUS CHECK (status IN ('IN_PROGRESS', 'FINISHED', 'ABANDONED')), -- TIMED_OUT no aplica en sesiones IA
     CONSTRAINT CK_AI_TRIEDS_SCORE CHECK (score IS NULL OR (score >= 0 AND score <= 100)),
     CONSTRAINT CK_AI_TRIEDS_TOTAL_QUESTIONS CHECK (total_questions > 0),
@@ -25,17 +25,14 @@ CREATE TABLE razonapro.ai_trieds (
     CONSTRAINT PK_AI_TRIEDS PRIMARY KEY (program_id, student_id, ai_tried_id)
 );
 
--- En progreso por defecto al iniciar una sesion IA
 ALTER TABLE razonapro.ai_trieds
 ALTER COLUMN status
 SET DEFAULT 'IN_PROGRESS';
 
--- Cero respuestas correctas al iniciar
 ALTER TABLE razonapro.ai_trieds
 ALTER COLUMN correct_answers
 SET DEFAULT 0;
 
--- Timestamp automatico al momento de iniciar el intento
 ALTER TABLE razonapro.ai_trieds
 ALTER COLUMN attempt_timestamp
 SET DEFAULT CURRENT_TIMESTAMP;
