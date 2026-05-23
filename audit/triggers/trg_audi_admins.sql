@@ -15,6 +15,7 @@ BEGIN
         VALUES (DEFAULT, OLD.admin_id, OLD.email, OLD.is_active, CURRENT_TIMESTAMP, CURRENT_USER, 'D');
         RETURN OLD;
     END IF;
+    RETURN NULL;
 END;
 $trg_audi_admins$ LANGUAGE plpgsql;
 

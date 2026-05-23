@@ -48,7 +48,8 @@ BEGIN
     AND test_id = v_test_id
     AND program_id = v_program_id
     AND student_id = v_student_id
-    AND tried_id = v_tried_id;
+    AND tried_id = v_tried_id
+    AND status <> 'FINISHED';
 
     RETURN COALESCE(NEW, OLD);
 END;

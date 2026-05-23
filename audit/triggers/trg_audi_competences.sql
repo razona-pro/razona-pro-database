@@ -15,6 +15,7 @@ BEGIN
         VALUES (DEFAULT, OLD.competence_id, OLD.competence_name, OLD.is_active, CURRENT_TIMESTAMP, CURRENT_USER, 'D');
         RETURN OLD;
     END IF;
+    RETURN NULL;
 END;
 $trg_audi_competences$ LANGUAGE plpgsql;
 

@@ -48,8 +48,8 @@ BEGIN
             AND program_id = p_program_id
             AND status = 'FINISHED'
             AND score IS NOT NULL
-            AND (v_period_start IS NULL OR finished_at::DATE >= v_period_start)
-            AND (v_period_end IS NULL OR finished_at::DATE <= v_period_end);
+            AND (v_period_start IS NULL OR COALESCE(finished_at, attempt_timestamp)::DATE >= v_period_start)
+            AND (v_period_end IS NULL OR COALESCE(finished_at, attempt_timestamp)::DATE <= v_period_end);
         ELSE
             v_trieds_score := 0;
             v_trieds_count := 0;
@@ -63,8 +63,8 @@ BEGIN
             AND program_id = p_program_id
             AND status = 'FINISHED'
             AND score IS NOT NULL
-            AND (v_period_start IS NULL OR finished_at::DATE >= v_period_start)
-            AND (v_period_end IS NULL OR finished_at::DATE <= v_period_end);
+            AND (v_period_start IS NULL OR COALESCE(finished_at, attempt_timestamp)::DATE >= v_period_start)
+            AND (v_period_end IS NULL OR COALESCE(finished_at, attempt_timestamp)::DATE <= v_period_end);
         ELSE
             v_ai_score := 0;
             v_ai_count := 0;
@@ -86,8 +86,7 @@ BEGIN
                 ai_trieds_score = v_ai_score,
                 ai_trieds_count = v_ai_count,
                 total_score = v_trieds_score + v_ai_score,
-                last_activity_at = CURRENT_TIMESTAMP,
-                updated_at = CURRENT_TIMESTAMP
+                last_activity_at = CURRENT_TIMESTAMP
             WHERE ranking_student_id = v_existing_id;
         ELSE
             INSERT INTO razonapro.rankings_students (
