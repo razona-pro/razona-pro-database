@@ -11,7 +11,7 @@ CREATE TABLE razonapro.ai_trieds (
     time_spent_seconds INTEGER,
     finished_at TIMESTAMP,
     attempt_timestamp TIMESTAMP NOT NULL,
-    description VARCHAR(100),
+    description VARCHAR(200),
     CONSTRAINT FK_AI_TRIEDS_STUDENTS FOREIGN KEY (student_id, program_id)
     REFERENCES razonapro.students (student_id, program_id) ON DELETE RESTRICT ON UPDATE RESTRICT,
     CONSTRAINT CK_AI_TRIEDS_STATUS CHECK (status IN ('IN_PROGRESS', 'FINISHED', 'ABANDONED')), -- TIMED_OUT no aplica en sesiones IA

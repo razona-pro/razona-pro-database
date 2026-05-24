@@ -1,57 +1,71 @@
 # razona-pro-database
 
-Scripts de la base de datos de RazonaPro. Modelo relacional implementado en PostgreSQL 15+ sobre Supabase con 14 tablas, triggers, validaciones, constraints y 7 tablas de auditoría.
+Scripts de base de datos para RazonaPro — evaluación Saber Pro UFPSO.  
+Motor: **PostgreSQL 15+** · Esquema: `razonapro`  
+**Autores:** Fabian Rojas (0192270) · Andres Gomez (0192250)
 
 ---
 
-## Tecnologías
+## Tablas principales (14)
 
-- PostgreSQL 15+
-- Supabase
+| Tabla | PK |
+|---|---|
+| `admins` | `admin_id` VARCHAR(6) — `AMN###` |
+| `programs` | `program_id` VARCHAR(3) — numérico |
+| `competences` | `competence_id` VARCHAR(6) — `CPE###` |
+| `rankings` | `ranking_id` VARCHAR(6) — `RKG###` |
+| `students` | `student_id` VARCHAR(7) — numérico (`program_id` + 4 dígitos) |
+| `questions` | `(competence_id, question_id)` — `QTN####` |
+| `options` | `(competence_id, question_id, option_id)` — `OTN###` |
+| `tests` | `(competence_id, test_id)` — `TET#####` |
+| `tests_questions` | `test_question_id` INTEGER secuencia |
+| `trieds` | `(program_id, student_id, competence_id, test_id, tried_id)` — `TRD#######` |
+| `students_responses` | `student_response_id` VARCHAR(10) — `SRE#######` |
+| `ai_trieds` | `(program_id, student_id, ai_tried_id)` — `ATD#######` |
+| `ai_tried_responses` | `(program_id, student_id, ai_tried_id, ai_tried_response_id)` — `ATE#######` |
+| `rankings_students` | `ranking_student_id` INTEGER secuencia |
+
+## Tablas de auditoría (9)
+
+`audi_admins` · `audi_programs` · `audi_competences` · `audi_students` · `audi_tests` · `audi_questions` · `audi_rankings` · `audi_options` · `audi_tests_questions`
+
+Todas capturan `UPDATE` y `DELETE`. `students_responses` tiene un trigger que restringe operaciones según el estado del intento asociado.
 
 ---
 
-## Estructura del repositorio
+### Convención de IDs (VARCHAR PKs)
+
+El ID se forma con el acrónimo de la tabla + ceros hasta llenar el VARCHAR:
+
+| Tabla | Acrónimo | Ejemplo | VARCHAR |
+|---|---|---|---|
+| admins | AMN | AMN001 | (6) |
+| competences | CPE | CPE001 | (6) |
+| rankings | RKG | RKG001 | (6) |
+| questions | QTN | QTN0001 | (7) |
+| options | OTN | OTN01 | (6) |
+| tests | TET | TET00001 | (8) |
+| trieds | TRD | TRD0000001 | (10) |
+| students_responses | SRE | SRE0000001 | (10) |
+| ai_trieds | ATD | ATD0000001 | (10) |
+| ai_tried_responses | ATE | ATE0000001 | (10) |
+
+> `program_id` y `student_id` usan solo números.  
+> `test_question_id` y `ranking_student_id` son `INTEGER` con secuencia.
+
+---
+
+## Estructura
 
 ```
 razona-pro-database/
-├── ddl/
-│   ├── ddl_admins.sql
-│   ├── ddl_programs.sql
-│   ├── ddl_competences.sql
-│   ├── ddl_rankings.sql
-│   ├── ddl_students.sql
-│   ├── ddl_questions.sql
-│   ├── ddl_options.sql
-│   ├── ddl_tests.sql
-│   ├── ddl_tests_questions.sql
-│   ├── ddl_trieds.sql
-│   ├── ddl_students_responses.sql
-│   ├── ddl_ai_trieds.sql
-│   ├── ddl_ai_tried_responses.sql
-│   └── ddl_rankings_students.sql
+├── ddl/                          # 14 archivos
 ├── audit/
-│   ├── ddl/
-│   │   ├── ddl_audi_admins.sql
-│   │   ├── ddl_audi_programs.sql
-│   │   ├── ddl_audi_competences.sql
-│   │   ├── ddl_audi_students.sql
-│   │   ├── ddl_audi_tests.sql
-│   │   ├── ddl_audi_questions.sql
-│   │   └── ddl_audi_rankings.sql
-│   └── triggers/
-│       ├── trg_audi_admins.sql
-│       ├── trg_audi_programs.sql
-│       ├── trg_audi_competences.sql
-│       ├── trg_audi_students.sql
-│       ├── trg_audi_tests.sql
-│       ├── trg_audi_questions.sql
-│       └── trg_audi_rankings.sql
-├── triggers/
-│   ├── trg_updated_at.sql
-│   ├── trg_calculate_scores.sql
-│   ├── trg_correct_answers.sql
-│   └── trg_rankings.sql
+│   ├── ddl/                      # 9 archivos
+│   └── triggers/                 # 9 archivos
+├── triggers/                     # 5 archivos
+├── dml/                          # 14 archivos
+│   └── csv/                      # 10 archivos
 └── README.md
 ```
 
@@ -59,31 +73,29 @@ razona-pro-database/
 
 ## Orden de ejecución
 
-Los scripts deben ejecutarse en el siguiente orden.
-
-### 1. Tablas principales
-
-| # | Archivo | Depende de |
-|---|---------|------------|
-| 1 | `ddl/ddl_admins.sql` | — |
-| 2 | `ddl/ddl_programs.sql` | — |
-| 3 | `ddl/ddl_competences.sql` | — |
-| 4 | `ddl/ddl_rankings.sql` | — |
-| 5 | `ddl/ddl_students.sql` | programs |
-| 6 | `ddl/ddl_questions.sql` | admins, competences |
-| 7 | `ddl/ddl_options.sql` | questions |
-| 8 | `ddl/ddl_tests.sql` | admins, competences |
-| 9 | `ddl/ddl_tests_questions.sql` | admins, tests, questions |
-| 10 | `ddl/ddl_trieds.sql` | students, tests |
-| 11 | `ddl/ddl_students_responses.sql` | options, trieds |
-| 12 | `ddl/ddl_ai_trieds.sql` | students |
-| 13 | `ddl/ddl_ai_tried_responses.sql` | ai_trieds, competences |
-| 14 | `ddl/ddl_rankings_students.sql` | rankings, students |
-
-### 2. Tablas de auditoría
+### 1 — DDL tablas principales
 
 | # | Archivo |
-|---|---------|
+|---|---|
+| 01 | `ddl/ddl_admins.sql` |
+| 02 | `ddl/ddl_programs.sql` |
+| 03 | `ddl/ddl_competences.sql` |
+| 04 | `ddl/ddl_rankings.sql` |
+| 05 | `ddl/ddl_students.sql` |
+| 06 | `ddl/ddl_questions.sql` |
+| 07 | `ddl/ddl_options.sql` |
+| 08 | `ddl/ddl_tests.sql` |
+| 09 | `ddl/ddl_tests_questions.sql` |
+| 10 | `ddl/ddl_trieds.sql` |
+| 11 | `ddl/ddl_students_responses.sql` |
+| 12 | `ddl/ddl_ai_trieds.sql` |
+| 13 | `ddl/ddl_ai_tried_responses.sql` |
+| 14 | `ddl/ddl_rankings_students.sql` |
+
+### 2 — DDL auditoría
+
+| # | Archivo |
+|---|---|
 | 15 | `audit/ddl/ddl_audi_admins.sql` |
 | 16 | `audit/ddl/ddl_audi_programs.sql` |
 | 17 | `audit/ddl/ddl_audi_competences.sql` |
@@ -91,31 +103,64 @@ Los scripts deben ejecutarse en el siguiente orden.
 | 19 | `audit/ddl/ddl_audi_tests.sql` |
 | 20 | `audit/ddl/ddl_audi_questions.sql` |
 | 21 | `audit/ddl/ddl_audi_rankings.sql` |
+| 22 | `audit/ddl/ddl_audi_options.sql` |
+| 23 | `audit/ddl/ddl_audi_tests_questions.sql` |
 
-### 3. Triggers lógicos
-
-| # | Archivo | Qué hace |
-|---|---------|----------|
-| 22 | `triggers/trg_updated_at.sql` | Actualiza `updated_at` automáticamente en todas las tablas que lo tienen |
-| 23 | `triggers/trg_calculate_scores.sql` | Calcula el score de `trieds` y `ai_trieds` al pasar a `FINISHED` |
-| 24 | `triggers/trg_correct_answers.sql` | Recuenta `correct_answers` en tiempo real al registrar respuestas |
-| 25 | `triggers/trg_rankings.sql` | Recalcula el ranking del estudiante al finalizar un intento |
-
-### 4. Triggers de auditoría
+### 3 — Triggers de negocio
 
 | # | Archivo |
-|---|---------|
-| 26 | `audit/triggers/trg_audi_admins.sql` |
-| 27 | `audit/triggers/trg_audi_programs.sql` |
-| 28 | `audit/triggers/trg_audi_competences.sql` |
-| 29 | `audit/triggers/trg_audi_students.sql` |
-| 30 | `audit/triggers/trg_audi_tests.sql` |
-| 31 | `audit/triggers/trg_audi_questions.sql` |
-| 32 | `audit/triggers/trg_audi_rankings.sql` |
+|---|---|
+| 24 | `triggers/trg_updated_at.sql` |
+| 25 | `triggers/trg_calculate_scores.sql` |
+| 26 | `triggers/trg_correct_answers.sql` |
+| 27 | `triggers/trg_rankings.sql` |
+| 28 | `triggers/trg_restrict_students_responses.sql` |
+
+### 4 — Triggers de auditoría
+
+| # | Archivo |
+|---|---|
+| 29 | `audit/triggers/trg_audi_admins.sql` |
+| 30 | `audit/triggers/trg_audi_programs.sql` |
+| 31 | `audit/triggers/trg_audi_competences.sql` |
+| 32 | `audit/triggers/trg_audi_students.sql` |
+| 33 | `audit/triggers/trg_audi_tests.sql` |
+| 34 | `audit/triggers/trg_audi_questions.sql` |
+| 35 | `audit/triggers/trg_audi_rankings.sql` |
+| 36 | `audit/triggers/trg_audi_options.sql` |
+| 37 | `audit/triggers/trg_audi_tests_questions.sql` |
+
+### 5 — DML
+
+| # | Archivo | Método | Filas |
+|---|---|---|---|
+| 38 | `dml/dml_programs.sql` | INSERT | 10 |
+| 39 | `dml/dml_admins.sql` | INSERT | 5 |
+| 40 | `dml/dml_competences.sql` | INSERT | 5 |
+| 41 | `dml/dml_rankings.sql` | INSERT | 5 |
+| 42 | `dml/dml_students.sql` | COPY | 500 |
+| 43 | `dml/dml_questions.sql` | COPY | 5 000 |
+| 44 | `dml/dml_options.sql` | COPY | 21 020 |
+| 45 | `dml/dml_tests.sql` | INSERT | 10 |
+| 46 | `dml/dml_tests_questions.sql` | INSERT | 200 |
+| 47 | `dml/dml_trieds.sql` | COPY | 74 000 |
+| 48 | `dml/dml_students_responses.sql` | COPY | 1 200 000 |
+| 49 | `dml/dml_ai_trieds.sql` | COPY | 35 000 |
+| 50 | `dml/dml_ai_tried_responses.sql` | COPY | 140 000 |
+| 51 | `dml/dml_rankings_students.sql` | INSERT | 25 |
+
+> El paso 48 (`students_responses.csv`, ~126 MB) puede tardar un poco más.
 
 ---
 
-## Autores
+## Notas
 
-- Fabian Rojas — 0192270
-- Andres Gomez — 0192250
+El archivo `students_responses.csv` no se incluye directamente en el repositorio debido a que supera el límite de tamaño permitido por GitHub (100 MB).
+
+Por esta razón, se adjuntó comprimido en formato `.rar` para el caso de carga masiva de datos.
+
+Una vez descomprimido, el archivo debe ubicarse en la siguiente ruta:
+
+`C:\razonapro\repositorios\razona-pro-database\dml\csv\`
+
+> Ajustar la ruta en caso de que el repositorio se encuentre en una ubicación diferente.

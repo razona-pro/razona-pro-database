@@ -16,7 +16,7 @@ CREATE TABLE razonapro.admins (
     CONSTRAINT UN_ADMINS_EMAIL UNIQUE (email),
     CONSTRAINT UN_ADMINS_PHONE UNIQUE (phone),
     CONSTRAINT CK_ADMINS_IS_ACTIVE CHECK (is_active IN ('Y', 'N')),
-    CONSTRAINT CK_ADMINS_EMAIL_FMT CHECK (email ~* '^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$' AND email NOT LIKE '%..%'),
+    CONSTRAINT CK_ADMINS_EMAIL_FMT CHECK (email ~ '^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$' AND email NOT LIKE '%..%'),
     CONSTRAINT CK_ADMINS_PHONE_FMT CHECK (phone ~ '^\+[1-9][0-9]{10,13}$'),
     CONSTRAINT CK_ADMINS_PWD_LEN CHECK (LENGTH(password_hash) >= 60), -- bcrypt/argon2 producen minimo 60 chars
     CONSTRAINT CK_ADMINS_FIRST_NAME_NOTEMPTY CHECK (LENGTH(TRIM(first_name)) > 0),

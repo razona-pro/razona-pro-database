@@ -4,7 +4,7 @@ CREATE TABLE razonapro.options (
     competence_id VARCHAR(6) NOT NULL,
     question_id VARCHAR(7) NOT NULL,
     option_id VARCHAR(6) NOT NULL,
-    option_text VARCHAR(200) NOT NULL,
+    option_text VARCHAR(300) NOT NULL,
     is_correct CHAR(1) NOT NULL,
     CONSTRAINT FK_OPTIONS_QUESTIONS FOREIGN KEY (competence_id, question_id)
     REFERENCES razonapro.questions (competence_id, question_id) ON DELETE RESTRICT ON UPDATE RESTRICT,
