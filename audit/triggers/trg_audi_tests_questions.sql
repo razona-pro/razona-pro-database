@@ -3,7 +3,7 @@ ON razonapro.tests_questions;
 
 DROP FUNCTION IF EXISTS razonapro.fn_audi_tests_questions();
 
-CREATE OR REPLACE FUNCTION razonapro.fn_audi_tests_questions()
+CREATE FUNCTION razonapro.fn_audi_tests_questions()
 RETURNS TRIGGER AS $trg_audi_tests_questions$
 BEGIN
     INSERT INTO razonapro.audi_tests_questions (

@@ -3,7 +3,7 @@ ON razonapro.students_responses;
 
 DROP FUNCTION IF EXISTS razonapro.fn_restrict_students_responses();
 
-CREATE OR REPLACE FUNCTION razonapro.fn_restrict_students_responses()
+CREATE FUNCTION razonapro.fn_restrict_students_responses()
 RETURNS TRIGGER AS $trg_restrict_students_responses$
 DECLARE
     v_status razonapro.trieds.status%TYPE;
