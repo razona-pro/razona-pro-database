@@ -12,7 +12,8 @@ DROP FUNCTION IF EXISTS razonapro.fn_refresh_student_ranking(VARCHAR, VARCHAR);
 -- rankings activos. Se invoca desde los triggers de TRIEDS y AI_TRIEDS
 CREATE FUNCTION razonapro.fn_refresh_student_ranking(
     p_student_id VARCHAR,
-    p_program_id VARCHAR
+    p_program_id VARCHAR,
+    p_finished_at TIMESTAMP
 )
 RETURNS VOID AS $fn_refresh_student_ranking$
 DECLARE
@@ -29,12 +30,15 @@ BEGIN
         SELECT * FROM razonapro.rankings WHERE is_active = 'Y'
     LOOP
         CASE v_ranking.period_type
+            WHEN 'DAILY' THEN
+                v_period_start := p_finished_at::DATE;
+                v_period_end   := p_finished_at::DATE;
             WHEN 'WEEKLY' THEN
-                v_period_start := DATE_TRUNC('week', CURRENT_DATE)::DATE;
-                v_period_end := (DATE_TRUNC('week', CURRENT_DATE) + INTERVAL '6 days')::DATE;
+                v_period_start := DATE_TRUNC('week', p_finished_at)::DATE;
+                v_period_end := (DATE_TRUNC('week', p_finished_at) + INTERVAL '6 days')::DATE;
             WHEN 'MONTHLY' THEN
-                v_period_start := DATE_TRUNC('month', CURRENT_DATE)::DATE;
-                v_period_end := (DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month' - INTERVAL '1 day')::DATE;
+                v_period_start := DATE_TRUNC('month', p_finished_at)::DATE;
+                v_period_end := (DATE_TRUNC('month', p_finished_at) + INTERVAL '1 month' - INTERVAL '1 day')::DATE;
             ELSE
                 v_period_start := NULL;
                 v_period_end := NULL;
@@ -112,7 +116,7 @@ CREATE FUNCTION razonapro.fn_update_ranking_on_tried()
 RETURNS TRIGGER AS $trg_update_ranking_on_tried$
 BEGIN
     IF NEW.status = 'FINISHED' AND (TG_OP = 'INSERT' OR OLD.status <> 'FINISHED') THEN
-        PERFORM razonapro.fn_refresh_student_ranking(NEW.student_id, NEW.program_id);
+        PERFORM razonapro.fn_refresh_student_ranking(NEW.student_id, NEW.program_id, NEW.finished_at);
     END IF;
     RETURN NEW;
 END;
@@ -122,7 +126,7 @@ CREATE FUNCTION razonapro.fn_update_ranking_on_ai_tried()
 RETURNS TRIGGER AS $trg_update_ranking_on_ai_tried$
 BEGIN
     IF NEW.status = 'FINISHED' AND (TG_OP = 'INSERT' OR OLD.status <> 'FINISHED') THEN
-        PERFORM razonapro.fn_refresh_student_ranking(NEW.student_id, NEW.program_id);
+        PERFORM razonapro.fn_refresh_student_ranking(NEW.student_id, NEW.program_id, NEW.finished_at);
     END IF;
     RETURN NEW;
 END;
