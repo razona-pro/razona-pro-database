@@ -50,6 +50,10 @@ WHERE competence_id = 'CPE005'
 AND question_id = 'QTN0001'
 AND option_id = 'OTN001';
 
+SELECT *
+FROM razonapro.audi_options
+ORDER BY row_id;
+
 -- INSERT Y DELETE
 
 INSERT INTO razonapro.options (competence_id, question_id, option_id, option_text, is_correct)
@@ -89,3 +93,7 @@ FROM razonapro.options
 WHERE competence_id = 'CPE001'
 AND question_id = 'QTN0001'
 AND option_id = 'OTN905';
+
+SELECT *
+FROM razonapro.audi_options
+ORDER BY row_id;

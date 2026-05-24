@@ -307,6 +307,10 @@ WHERE competence_id = 'CPE005'
 AND test_id = 'TET00010'
 AND question_id = (
     SELECT MAX(question_id)
-    FROM razonapro.tests_questions
+    FROM razonapro.c
     WHERE test_id = 'TET00010'
     AND competence_id = 'CPE005');
+
+SELECT *
+FROM razonapro.audi_tests_questions
+ORDER BY row_id;
