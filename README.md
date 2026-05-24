@@ -143,7 +143,7 @@ razona-pro-database/
 | 44 | `dml/dml_options.sql` | COPY | 21 033 |
 | 45 | `dml/dml_tests.sql` | INSERT | 10 |
 | 46 | `dml/dml_tests_questions.sql` | INSERT | 200 |
-| 47 | `dml/dml_trieds.sql` | COPY | 74 126 |
+| 47 | `dml/dml_trieds.sql` | COPY | 74 106 |
 | 48 | `dml/dml_students_responses.sql` | COPY | 1 202 000 |
 | 49 | `dml/dml_ai_trieds.sql` | COPY | 35 030 |
 | 50 | `dml/dml_ai_tried_responses.sql` | COPY | 140 120 |
