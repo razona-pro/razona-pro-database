@@ -1,3 +1,10 @@
+SELECT *
+FROM razonapro.rankings_students
+WHERE ranking_id = 'RKG001'
+AND period_start = '2025-06-02'
+AND period_end   = '2025-06-08'
+ORDER BY total_score DESC;
+
 -- UPDATE
 
 UPDATE razonapro.rankings_students

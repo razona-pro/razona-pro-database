@@ -147,7 +147,7 @@ razona-pro-database/
 | 48 | `dml/dml_students_responses.sql` | COPY | 1 202 000 |
 | 49 | `dml/dml_ai_trieds.sql` | COPY | 35 030 |
 | 50 | `dml/dml_ai_tried_responses.sql` | COPY | 140 120 |
-| 51 | `dml/dml_rankings_students.sql` | INSERT | 25 |
+| 51 | `dml/dml_rankings_students.sql` | TRIGGER | AUTO |
 
 ---
 
@@ -160,3 +160,5 @@ Por esta razón, se adjuntó comprimido en formato `.rar` para el caso de carga 
 Una vez descomprimido, el archivo debe ubicarse en la siguiente ruta: `dml\csv\`
 
 > Se debe de ajustar la ruta en caso de que el repositorio se encuentre en una ubicación diferente.
+
+> Al consultar las tablas en Supabase, algunas pueden presentar menos registros de los descritos en la sección DML, ya que los scripts fueron ejecutados incluyendo operaciones de INSERT, UPDATE y DELETE para probar el funcionamiento completo de triggers, auditoría y restricciones.
