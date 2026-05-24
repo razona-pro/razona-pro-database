@@ -140,7 +140,7 @@ razona-pro-database/
 | 41 | `dml/dml_rankings.sql` | INSERT | 5 |
 | 42 | `dml/dml_students.sql` | COPY | 502 |
 | 43 | `dml/dml_questions.sql` | COPY | 5 000 |
-| 44 | `dml/dml_options.sql` | COPY | 21 020 |
+| 44 | `dml/dml_options.sql` | COPY | 21 033 |
 | 45 | `dml/dml_tests.sql` | INSERT | 10 |
 | 46 | `dml/dml_tests_questions.sql` | INSERT | 200 |
 | 47 | `dml/dml_trieds.sql` | COPY | 74 000 |
@@ -148,8 +148,6 @@ razona-pro-database/
 | 49 | `dml/dml_ai_trieds.sql` | COPY | 35 030 |
 | 50 | `dml/dml_ai_tried_responses.sql` | COPY | 140 120 |
 | 51 | `dml/dml_rankings_students.sql` | INSERT | 25 |
-
-> El paso 48 (`students_responses.csv`, ~126 MB) puede tardar un poco más.
 
 ---
 
@@ -159,8 +157,6 @@ El archivo `students_responses.csv` no se incluye directamente en el repositorio
 
 Por esta razón, se adjuntó comprimido en formato `.rar` para el caso de carga masiva de datos.
 
-Una vez descomprimido, el archivo debe ubicarse en la siguiente ruta:
+Una vez descomprimido, el archivo debe ubicarse en la siguiente ruta: `dml\csv\`
 
-`C:\razonapro\repositorios\razona-pro-database\dml\csv\`
-
-> Ajustar la ruta en caso de que el repositorio se encuentre en una ubicación diferente.
+> Se debe de ajustar la ruta en caso de que el repositorio se encuentre en una ubicación diferente.
