@@ -13,7 +13,7 @@ FROM razonapro.ai_tried_responses;
 SELECT COUNT(*) AS total_respuestas_ia
 FROM razonapro.ai_tried_responses;
 
-SELECT is_correct, COUNT(*), ROUND(COUNT(*)::NUMERIC/140000*100,2) AS pct
+SELECT is_correct, COUNT(*), ROUND(COUNT(*)::NUMERIC / SUM(COUNT(*)) OVER () * 100, 2) AS pct
 FROM razonapro.ai_tried_responses
 GROUP BY is_correct;
 
