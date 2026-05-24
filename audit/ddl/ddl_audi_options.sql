@@ -5,7 +5,7 @@ CREATE TABLE razonapro.audi_options (
     competence_id VARCHAR(6) NOT NULL,
     question_id VARCHAR(7) NOT NULL,
     option_id VARCHAR(6) NOT NULL,
-    option_text VARCHAR(200) NOT NULL,
+    option_text VARCHAR(300) NOT NULL,
     is_correct CHAR(1) NOT NULL,
     registered_at TIMESTAMP NOT NULL,
     db_user VARCHAR(50) NOT NULL,

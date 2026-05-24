@@ -17,11 +17,11 @@ SET is_active = 'N'
 WHERE admin_id = 'AMN003';
 
 UPDATE razonapro.admins
-SET email = 'fabian.rojas.v2@gmail.com'
+SET email = 'FABIAN.ROJAS.V2@GMAIL.COM'
 WHERE admin_id = 'AMN001';
 
 UPDATE razonapro.admins
-SET email = 'andres.gomez.v2@outlook.com'
+SET email = 'ANDRES.GOMEZ.V2@GMAIL.COM'
 WHERE admin_id = 'AMN002';
 
 UPDATE razonapro.admins

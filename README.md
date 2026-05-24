@@ -134,19 +134,19 @@ razona-pro-database/
 
 | # | Archivo | Método | Filas |
 |---|---|---|---|
-| 38 | `dml/dml_programs.sql` | INSERT | 10 |
-| 39 | `dml/dml_admins.sql` | INSERT | 5 |
-| 40 | `dml/dml_competences.sql` | INSERT | 5 |
+| 38 | `dml/dml_programs.sql` | COPY | 10 |
+| 39 | `dml/dml_admins.sql` | COPY | 5 |
+| 40 | `dml/dml_competences.sql` | COPY | 5 |
 | 41 | `dml/dml_rankings.sql` | INSERT | 5 |
-| 42 | `dml/dml_students.sql` | COPY | 500 |
+| 42 | `dml/dml_students.sql` | COPY | 502 |
 | 43 | `dml/dml_questions.sql` | COPY | 5 000 |
 | 44 | `dml/dml_options.sql` | COPY | 21 020 |
 | 45 | `dml/dml_tests.sql` | INSERT | 10 |
 | 46 | `dml/dml_tests_questions.sql` | INSERT | 200 |
 | 47 | `dml/dml_trieds.sql` | COPY | 74 000 |
-| 48 | `dml/dml_students_responses.sql` | COPY | 1 200 000 |
-| 49 | `dml/dml_ai_trieds.sql` | COPY | 35 000 |
-| 50 | `dml/dml_ai_tried_responses.sql` | COPY | 140 000 |
+| 48 | `dml/dml_students_responses.sql` | COPY | 1 202 000 |
+| 49 | `dml/dml_ai_trieds.sql` | COPY | 35 030 |
+| 50 | `dml/dml_ai_tried_responses.sql` | COPY | 140 120 |
 | 51 | `dml/dml_rankings_students.sql` | INSERT | 25 |
 
 > El paso 48 (`students_responses.csv`, ~126 MB) puede tardar un poco más.

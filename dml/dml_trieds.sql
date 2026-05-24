@@ -1,5 +1,5 @@
 SELECT *
-FROM razonapro.admins;
+FROM razonapro.trieds;
 
 -- INSERT CON CSV
 

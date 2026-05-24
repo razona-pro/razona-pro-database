@@ -19,46 +19,19 @@ FROM razonapro.students_responses
 GROUP BY competence_id
 ORDER BY competence_id;
 
--- UPDATE
+-- UPDATE — debe fallar con: "Solo se permite actualizar option_id y answered_at"
 
 UPDATE razonapro.students_responses
 SET is_correct = 'Y'
 WHERE student_response_id = 'SRE0000001';
 
-UPDATE razonapro.students_responses
-SET is_correct = 'N'
-WHERE student_response_id = 'SRE0000002';
+-- UPDATE sobre intento FINISHED — debe fallar con: "el intento X tiene estado FINISHED y ya no admite cambios"
 
 UPDATE razonapro.students_responses
-SET answered_at = CURRENT_TIMESTAMP
-WHERE student_response_id = 'SRE0000003';
+SET option_id = 'OTN002'
+WHERE student_response_id = 'SRE0000001';
 
-UPDATE razonapro.students_responses
-SET answered_at = CURRENT_TIMESTAMP
-WHERE student_response_id = 'SRE0000004';
+-- DELETE — debe fallar con: "DELETE no permitido en students_responses"
 
-UPDATE razonapro.students_responses
-SET option_id   = 'OTN002'
-WHERE student_response_id = 'SRE0000005';
-
--- DELETE
-
-DELETE
-FROM razonapro.students_responses
-WHERE student_response_id = 'SRE1199996';
-
-DELETE
-FROM razonapro.students_responses
-WHERE student_response_id = 'SRE1199997';
-
-DELETE
-FROM razonapro.students_responses
-WHERE student_response_id = 'SRE1199998';
-
-DELETE
-FROM razonapro.students_responses
-WHERE student_response_id = 'SRE1199999';
-
-DELETE
-FROM razonapro.students_responses
-WHERE student_response_id = 'SRE1200000';
+DELETE FROM razonapro.students_responses
+WHERE student_response_id = 'SRE0000001';
